@@ -41,23 +41,8 @@ public class ParseHtmlResponse {
 			List<Element> cells = row.getElementsByTag("td");
 			if (cells.size() > 10) {
 				data.setCallIV(cells.get(4).ownText());
-				Element callLtp = cells.get(5);
-				List<Element> link = callLtp.getElementsByTag("a");
-				if (link.size() > 0) {
-					data.setCallLTP(link.get(0).ownText());
-				} else {
-					data.setCallLTP(callLtp.ownText());
-				}
 				data.setStrikePrice(cells.get(11).getElementsByTag("b").get(0).ownText());
 				data.setPutIV(cells.get(18).ownText());
-				link = null;
-				Element putLtp = cells.get(17);
-				link = putLtp.getElementsByTag("a");
-				if (link.size() > 0) {
-					data.setPutLTP(link.get(0).ownText());
-				} else {
-					data.setPutLTP(putLtp.ownText());
-				}
 				optionData.add(data);
 			}
 		}

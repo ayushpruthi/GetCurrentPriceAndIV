@@ -2,20 +2,11 @@ package com.standarddeviationanalysis.optionchain;
 
 public class OptionChainData {
 
-	private String callLTP;
 	private String callIV;
 	private Double strikePrice;
-	private String putLTP;
 	private String putIV;
 
-	public String getCallLTP() {
-		return callLTP;
-	}
-
-	public void setCallLTP(String callLTP) {
-		this.callLTP = callLTP;
-	}
-
+	
 	public String getCallIV() {
 		return callIV;
 	}
@@ -32,13 +23,6 @@ public class OptionChainData {
 		this.strikePrice = Double.parseDouble(strikePrice.trim());
 	}
 
-	public String getPutLTP() {
-		return putLTP;
-	}
-
-	public void setPutLTP(String putLTP) {
-		this.putLTP = putLTP;
-	}
 
 	public String getPutIV() {
 		return putIV;
