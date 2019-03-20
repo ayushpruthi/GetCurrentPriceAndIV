@@ -44,8 +44,7 @@ public class ExecutionStart {
 		bannedSecurities = getBannedSecurities();
 		System.out.println("Reading excel file: " + properties.get("SheetName"));
 		try {
-			suiteData = SuiteController.getExcelData(properties.get("SheetName"), properties.get("TabName"),
-					properties.get("RunFor").trim());
+			suiteData = SuiteController.getExcelData(properties.get("SheetName"), properties.get("TabName"));
 		} catch (IOException e) {
 			System.out.println("Not able to read excel file " + properties.get("SheetName"));
 			e.printStackTrace();
@@ -54,8 +53,7 @@ public class ExecutionStart {
 		executeSuite(suiteData);
 		System.out.println("Putting results in excel file...");
 		try {
-			SuiteController.dumpExcelResults(suiteData, properties.get("RunFor"), properties.get("SheetName"),
-					properties.get("TabName"));
+			SuiteController.dumpExcelResults(suiteData, properties.get("SheetName"), properties.get("TabName"));
 		} catch (IOException e) {
 			System.out.println("Error in writing execution results in excel");
 			e.printStackTrace();

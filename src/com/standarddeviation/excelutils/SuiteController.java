@@ -43,7 +43,7 @@ public class SuiteController {
 
 	}
 
-	public static List<ExcelData> getExcelData(String sheetName, String tabName, String runFor) throws IOException {
+	public static List<ExcelData> getExcelData(String sheetName, String tabName) throws IOException {
 		XSSFWorkbook workbook = getWorkBookInstance(sheetName);
 		XSSFSheet sheet = workbook.getSheet(tabName);
 		DataFormatter df = new DataFormatter();
@@ -67,10 +67,11 @@ public class SuiteController {
 
 		}
 		workbook.close();
+		data.remove(0);
 		return data;
 	}
 
-	public static void dumpExcelResults(List<ExcelData> excelData, String runFor, String sheetName, String tabName)
+	public static void dumpExcelResults(List<ExcelData> excelData, String sheetName, String tabName)
 			throws IOException {
 		Iterator<ExcelData> dataItr = excelData.iterator();
 		XSSFWorkbook workbook = getWorkBookInstance(sheetName);
@@ -78,12 +79,19 @@ public class SuiteController {
 		DataFormatter df = new DataFormatter();
 
 		Iterator<Row> itr = sheet.rowIterator();
-		while (dataItr.hasNext()) {
+		while (itr.hasNext()) {
 			Row row = itr.next();
-			String security = df.formatCellValue(row.getCell(0));
-			String callPut = df.formatCellValue(row.getCell(2));
+			String security = df.formatCellValue(row.getCell(Integer.parseInt(properties.get("SecurityColumn"))));
+			String callPut = df.formatCellValue(row.getCell(Integer.parseInt(properties.get("CallPutColumn"))));
+			String strike = df.formatCellValue(row.getCell(Integer.parseInt(properties.get("StrikeColumn"))));
+			try {
+				Double.parseDouble(strike);
+			} catch (NumberFormatException e) {
+				continue;
+			}
+
+			ExcelData data = dataItr.next();
 			if (security != null && !security.isEmpty() && !callPut.isEmpty()) {
-				ExcelData data = dataItr.next();
 
 				setCellData(row, data.getCurrentPrice(), Integer.parseInt(properties.get("CurrentPriceColumn")));
 				setCellData(row, data.getIV(), Integer.parseInt(properties.get("CurrentIVColumn")));
@@ -100,6 +108,7 @@ public class SuiteController {
 					}
 				}
 			}
+
 		}
 		FileOutputStream fo = null;
 		try {
